@@ -1,0 +1,23 @@
+{
+  "name": "pesky_belly",
+  "version": "1.0.0",
+  "description": "Organise recipes",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hadolas/pesky_belly.git"
+  },
+  "author": "hadolas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hadolas/pesky_belly/issues"
+  },
+  "homepage": "https://github.com/hadolas/pesky_belly#readme",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.3"
+  }
+}
