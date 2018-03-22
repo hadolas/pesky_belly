@@ -1,0 +1,13 @@
+<% include ./partials/header %>
+
+<h1>CREATE A RECIPE!</h1>
+
+<form action="/recipes" method="POST">
+    <input type="text" name="recipe_title" placeholder="Recipe Title">
+    <input type="text" name="recipe_image" placeholder="Image URL">
+    <button>Submit</button>
+</form>
+
+<a href="/recipes">Back to Recipes Page</a>
+
+<% include ./partials/footer %>

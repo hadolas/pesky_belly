@@ -2,10 +2,12 @@
 
 <h1>Recipes Home</h1>
 
+<a href="/recipes/new">Add a new recipe!</a>
+
 <% recipes.forEach(function(recipe){ %>
 
     <div>
-        <h4><%= recipe.name %></h4>
+        <h4><%= recipe.title %></h4>
         <img src="<%= recipe.image %>">
     </div>
 <% }); %>
