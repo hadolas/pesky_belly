@@ -1,15 +1,36 @@
 <% include ./partials/header %>
 
-<h1>Recipes Home</h1>
-
-<a href="/recipes/new">Add a new recipe!</a>
-
-<% recipes.forEach(function(recipe){ %>
-
-    <div>
-        <h4><%= recipe.title %></h4>
-        <img src="<%= recipe.image %>">
+<div class="container">
+    <header class="jumbotron">
+        <h1>Recipes Home</h1>
+        <p>All our recipes in one place!</p>
+        <p>
+            <a class="btn btn-lg btn-primary" href="/recipes/new">Add a new recipe!</a>
+        </p>
+    </header>
+    
+    
+    <!--<div class="row">-->
+    <!--    <div class="col-lg-12">-->
+    <!--        <h2>Popular Recipes</h2>-->
+    <!--    </div>-->
+    <!--</div>-->
+    
+    <div class="row text-center">
+         <% recipes.forEach(function(recipe){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <!--<h4><%= recipe.title %></h4>-->
+                    <img src="<%= recipe.image %>">
+                    <div>
+                        <h4><%=recipe.title%></h4>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
     </div>
-<% }); %>
+    
+</div>
+
 
 <% include ./partials/footer %>
