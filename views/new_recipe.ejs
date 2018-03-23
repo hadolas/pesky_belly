@@ -1,13 +1,21 @@
 <% include ./partials/header %>
 
-<h1>CREATE A RECIPE!</h1>
+<div class="container">
+    
+    <div class="row">
+        <h1 style="text-align: center">CREATE A RECIPE!</h1>
+        <div style="width:30%;margin: 35px auto;">
+            <form action="/recipes" method="POST">
+                <div class="form-group"><input class="form-control" type="text" name="recipe_title" placeholder="Recipe Title"></div>
+                <div class="form-group"><input class="form-control" type="text" name="recipe_image" placeholder="Image URL"></div>
+                <div class="form-group"><button class="btn btn-lg btn-block">Submit</button></div>
+            </form> 
+            <a href="/recipes">Back to Recipes Page</a>   
+        </div>
+    </div>
+    
+</div>
 
-<form action="/recipes" method="POST">
-    <input type="text" name="recipe_title" placeholder="Recipe Title">
-    <input type="text" name="recipe_image" placeholder="Image URL">
-    <button>Submit</button>
-</form>
 
-<a href="/recipes">Back to Recipes Page</a>
 
 <% include ./partials/footer %>
