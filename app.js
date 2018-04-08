@@ -12,16 +12,16 @@ app.set("view engine", "ejs");
 var recipeSchema = new mongoose.Schema({
     title: String,
     image: String,
-    desciption: String
+    description: String
 });
 //RECIPE MODEL
 var Recipe = mongoose.model("Recipe", recipeSchema);
 
 //ADD RECIPE TO DATABASE
 // Recipe.create({
-//     title: "Chicken and Onion Burger", 
-//     image: "https://source.unsplash.com/pLKgCsBOiw4", 
-//     desciption: "Try this chicken and onion burger yum"
+//     title: "Spanish Paella", 
+//     image: "https://source.unsplash.com/Pt_YmiYm7a4", 
+//     description: "Try this spanish paella yum"
 // }, function(err, recipe){
 //     if(err){
 //         console.log(err);
@@ -52,7 +52,8 @@ app.post("/recipes", function(req, res){
     //res.send(req.body);
     var recipe_title = req.body.recipe_title;
     var recipe_image = req.body.recipe_image;
-    var newRecipe = {title: recipe_title, image: recipe_image}
+    var recipe_description = req.body.recipe_description;
+    var newRecipe = {title: recipe_title, image: recipe_image, description: recipe_description}
     
     //Add recipe to db
         Recipe.create(newRecipe, function(err, new_recipe){
@@ -61,7 +62,7 @@ app.post("/recipes", function(req, res){
             } else {
                 console.log("NEW RECIPE\n", new_recipe);
                 //REDIRECT TO "/recipes" PAGE
-                res.redirect("/index_recipes");
+                res.redirect("/recipes");
             }
         });
 });
@@ -73,9 +74,13 @@ app.get("/recipes/new", function(req, res){
 
 //SHOW - Show one recipe (in more detail)
 app.get("/recipes/:id", function(req, res){
-    //req.findById();
-    //res.send("This is the show page for this recipe :)");
-    res.render("show");
+    Recipe.findById(req.params.id, function(err, recipe_result){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("show", {recipe:recipe_result});     
+        }
+    });
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
