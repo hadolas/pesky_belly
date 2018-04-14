@@ -2,20 +2,15 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var Recipe = require("./models/recipe");
+var seedDB = require("./seeds");
 
 mongoose.connect("mongodb://localhost/pesky_belly");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
-//RECIPE SCHEMA
-var recipeSchema = new mongoose.Schema({
-    title: String,
-    image: String,
-    description: String
-});
-//RECIPE MODEL
-var Recipe = mongoose.model("Recipe", recipeSchema);
+seedDB();
 
 //ADD RECIPE TO DATABASE
 // Recipe.create({
