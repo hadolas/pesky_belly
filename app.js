@@ -69,10 +69,11 @@ app.get("/recipes/new", function(req, res){
 
 //SHOW - Show one recipe (in more detail)
 app.get("/recipes/:id", function(req, res){
-    Recipe.findById(req.params.id, function(err, recipe_result){
+    Recipe.findById(req.params.id).populate("notes").exec(function(err, recipe_result){
         if(err){
             console.log(err);
         } else {
+            console.log(recipe_result);
             res.render("show", {recipe:recipe_result});     
         }
     });
