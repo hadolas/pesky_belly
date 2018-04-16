@@ -7,4 +7,9 @@
 
 <p><%= recipe.description %></p>
 
+<% recipe.notes.forEach(function(note){ %>
+    <strong><p><%=note.text%></p></strong>
+
+<% }); %>
+
 <% include ./partials/footer %>
