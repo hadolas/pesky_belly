@@ -12,19 +12,6 @@ app.set("view engine", "ejs");
 
 seedDB();
 
-//ADD RECIPE TO DATABASE
-// Recipe.create({
-//     title: "Spanish Paella", 
-//     image: "https://source.unsplash.com/Pt_YmiYm7a4", 
-//     description: "Try this spanish paella yum"
-// }, function(err, recipe){
-//     if(err){
-//         console.log(err);
-//     } else {
-//         console.log("NEW RECIPE\n", recipe);
-//     }
-// });
-
 //ROUTE: RENDER HOMEPAGE
 app.get("/", function(req, res){
    res.render("homepage"); 
@@ -73,7 +60,6 @@ app.get("/recipes/:id", function(req, res){
         if(err){
             console.log(err);
         } else {
-            console.log(recipe_result);
             res.render("show", {recipe:recipe_result});     
         }
     });
