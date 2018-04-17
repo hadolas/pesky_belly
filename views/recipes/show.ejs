@@ -1,0 +1,56 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 style="text-align:center"><%= recipe.title %></h1>
+             <div class="thumbnail">
+                 
+                 <img class="img-responsive" src="<%= recipe.image %>">
+                   <p class="caption">
+                        <%= recipe.description %>
+                   </p>
+             </div>
+             <div class="well">
+                 <div class="text-right">
+                    <a class="btn btn-primary" href="/recipes/<%= recipe._id %>/notes/new">Add a new note</a>    
+                </div>
+                <% recipe.notes.forEach(function(note){ %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr>
+                            <strong><p><%=note.text%></p></strong>
+                            <span>17th April 2018</span>
+                        </div>
+                    </div>
+                <% }); %>
+             </div>
+        </div>
+    </div>
+   
+
+</div>
+
+                
+
+              
+                
+                
+<!--                <h1><%= recipe.title %></h1>-->
+<!--                <img src="<%= recipe.image %>">-->
+<!--                <p>-->
+<!--                    <%= recipe.description %>-->
+<!--                </p>-->
+<!--                <p>-->
+<!--                    <a class="btn btn-lg btn-primary" href="/recipes/<%= recipe._id %>/notes/new">Add a new note</a>    -->
+<!--                </p>-->
+                
+                
+<!--                <% recipe.notes.forEach(function(note){ %>-->
+<!--                    <strong><p><%=note.text%></p></strong>-->
+<!--                <% }); %>-->
+
+
+
+
+<% include ../partials/footer %>
