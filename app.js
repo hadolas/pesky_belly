@@ -3,12 +3,14 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var Recipe = require("./models/recipe");
+var Note   = require("./models/note");
 var seedDB = require("./seeds");
 
 mongoose.connect("mongodb://localhost/pesky_belly");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname+"/public"));
 
 seedDB();
 
@@ -23,7 +25,7 @@ app.get("/recipes", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("index_recipes", {recipes:recipe_results});  
+            res.render("recipes/index_recipes", {recipes:recipe_results});  
         }
     })    
 });
@@ -51,7 +53,7 @@ app.post("/recipes", function(req, res){
 
 //NEW - Render 'create new recipe' form
 app.get("/recipes/new", function(req, res){
-   res.render("new_recipe"); 
+   res.render("recipes/new_recipe"); 
 });
 
 //SHOW - Show one recipe (in more detail)
@@ -60,9 +62,49 @@ app.get("/recipes/:id", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("show", {recipe:recipe_result});     
+            res.render("recipes/show", {recipe:recipe_result});     
         }
     });
+});
+
+//===========================
+//           NOTES ROUTES
+//===========================
+
+app.get("/recipes/:id/notes/new", function(req, res){
+    Recipe.findById(req.params.id, function(err, recipe_result){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("notes/new", {recipe:recipe_result});
+        }
+    });
+});
+
+app.post("/recipes/:id/notes", function(req, res){
+    //lookup recipe using ID
+    Recipe.findById(req.params.id, function(err, recipeResult){
+        if(err){
+            console.log(err);
+            res.redirect("/recipes");
+        } else {
+            //create new note
+            Note.create(req.body.note, function(err, note){
+                if(err){
+                    console.log(err);
+                } else {
+                    //connect new note to recipe
+                    recipeResult.notes.push(note);
+                    recipeResult.save();
+                    //redirect to recipe show page
+                    res.redirect("/recipes/"+ recipeResult._id);
+                }
+            });
+        }
+    });
+    
+    
+    
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
