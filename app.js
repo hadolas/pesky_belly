@@ -1,10 +1,13 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-var Recipe = require("./models/recipe");
-var Note   = require("./models/note");
-var seedDB = require("./seeds");
+var express    = require("express"),
+    app        = express(),
+    bodyParser = require("body-parser"),
+    mongoose   = require("mongoose"),
+    passport   = require("passport"),
+    LocalStrategy = require("passport-local"),
+    Recipe     = require("./models/recipe"),
+    Note       = require("./models/note"),
+    User       = require("./models/user"),
+    seedDB     = require("./seeds");
 
 mongoose.connect("mongodb://localhost/pesky_belly");
 
