@@ -17,6 +17,23 @@ app.use(express.static(__dirname+"/public"));
 
 seedDB();
 
+//PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "mountain",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
+
 //ROUTE: RENDER HOMEPAGE
 app.get("/", function(req, res){
    res.render("homepage"); 
@@ -74,7 +91,7 @@ app.get("/recipes/:id", function(req, res){
 //           NOTES ROUTES
 //===========================
 
-app.get("/recipes/:id/notes/new", function(req, res){
+app.get("/recipes/:id/notes/new", isLoggedIn, function(req, res){
     Recipe.findById(req.params.id, function(err, recipe_result){
         if(err){
             console.log(err);
@@ -84,7 +101,7 @@ app.get("/recipes/:id/notes/new", function(req, res){
     });
 });
 
-app.post("/recipes/:id/notes", function(req, res){
+app.post("/recipes/:id/notes", isLoggedIn, function(req, res){
     //lookup recipe using ID
     Recipe.findById(req.params.id, function(err, recipeResult){
         if(err){
@@ -105,10 +122,50 @@ app.post("/recipes/:id/notes", function(req, res){
             });
         }
     });
-    
-    
-    
 });
+
+//AUTH ROUTES
+
+app.get("/signup", function(req, res) {
+    res.render("signup");
+});
+
+app.post("/signup", function(req, res){
+    var newUser = new User({username:req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("signup");
+        }
+        passport.authenticate("local")(req, res, function(){
+           res.redirect("/recipes"); 
+        });
+    });
+});
+
+app.get("/login", function(req, res){
+   res.render("login"); 
+});
+
+app.post("/login", passport.authenticate("local",
+    {
+        successRedirect:"/recipes", 
+        failureRedirect:"/login"
+        
+    }), function(req, res){
+});
+
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/");
+})
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("The Pesky Belly server is running.");
