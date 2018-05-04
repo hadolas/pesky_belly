@@ -16,20 +16,24 @@ router.get("/recipes", function(req, res){
 });
 
 //CREATE ROUTE: Add recipe to database
-router.post("/recipes", function(req, res){
+router.post("/recipes", isLoggedIn, function(req, res){
     // get data from "create recipe" form
     //res.send(req.body);
     var recipe_title = req.body.recipe_title;
     var recipe_image = req.body.recipe_image;
     var recipe_description = req.body.recipe_description;
-    var newRecipe = {title: recipe_title, image: recipe_image, description: recipe_description}
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    var newRecipe = {title: recipe_title, image: recipe_image, description: recipe_description, author: author}
     
     //Add recipe to db
         Recipe.create(newRecipe, function(err, new_recipe){
             if(err){
                 console.log(err);
             } else {
-                console.log("NEW RECIPE\n", new_recipe);
+                //console.log(new_recipe);
                 //REDIRECT TO "/recipes" PAGE
                 res.redirect("/recipes");
             }
@@ -37,7 +41,7 @@ router.post("/recipes", function(req, res){
 });
 
 //NEW - Render 'create new recipe' form
-router.get("/recipes/new", function(req, res){
+router.get("/recipes/new", isLoggedIn, function(req, res){
    res.render("recipes/new_recipe"); 
 });
 
@@ -51,5 +55,13 @@ router.get("/recipes/:id", function(req, res){
         }
     });
 });
+
+// MIDDLEWARE
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 module.exports = router;

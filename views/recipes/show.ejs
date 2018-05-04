@@ -7,9 +7,13 @@
              <div class="thumbnail">
                  
                  <img class="img-responsive" src="<%= recipe.image %>">
-                   <p class="caption">
-                        <%= recipe.description %>
-                   </p>
+                 <p class="caption">
+                     <em>Submitted by <%= recipe.author.username %></em>
+                 </p>
+                 <p class="caption">
+                     <%= recipe.description %>
+                 </p>
+                   
              </div>
              <div class="well">
                  <div class="text-right">
