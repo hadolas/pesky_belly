@@ -3,36 +3,36 @@ var express = require("express"),
 //    router  = express.Router({mergeParams: true});
     
 var Recipe  = require("../models/recipe"),
-    Note    = require("../models/note");
+    Comment    = require("../models/comment");
     
     
-// NEW NOTE
-router.get("/recipes/:id/notes/new", isLoggedIn, function(req, res){
+// NEW COMMENT
+router.get("/recipes/:id/comments/new", isLoggedIn, function(req, res){
     Recipe.findById(req.params.id, function(err, recipe_result){
         if(err){
             console.log(err);
         } else {
-            res.render("notes/new", {recipe:recipe_result});
+            res.render("comments/new", {recipe:recipe_result});
         }
     });
 });
 
 
-// CREATE NOTE
-router.post("/recipes/:id/notes", isLoggedIn, function(req, res){
+// CREATE COMMENT
+router.post("/recipes/:id/comments", isLoggedIn, function(req, res){
     //lookup recipe using ID
     Recipe.findById(req.params.id, function(err, recipeResult){
         if(err){
             console.log(err);
             res.redirect("/recipes");
         } else {
-            //create new note
-            Note.create(req.body.note, function(err, note){
+            //create new comment
+            Comment.create(req.body.comment, function(err, comment){
                 if(err){
                     console.log(err);
                 } else {
-                    //connect new note to recipe
-                    recipeResult.notes.push(note);
+                    //connect new comment to recipe
+                    recipeResult.comments.push(comment);
                     recipeResult.save();
                     //redirect to recipe show page
                     res.redirect("/recipes/"+ recipeResult._id);

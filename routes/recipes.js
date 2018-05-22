@@ -47,10 +47,11 @@ router.get("/recipes/new", isLoggedIn, function(req, res){
 
 //SHOW - Show one recipe (in more detail)
 router.get("/recipes/:id", function(req, res){
-    Recipe.findById(req.params.id).populate("notes").exec(function(err, recipe_result){
+    Recipe.findById(req.params.id).populate("comments").exec(function(err, recipe_result){
         if(err){
             console.log(err);
         } else {
+            console.log(recipe_result);
             res.render("recipes/show", {recipe:recipe_result});     
         }
     });

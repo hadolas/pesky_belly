@@ -17,16 +17,16 @@
              </div>
              <div class="well">
                  <div class="text-right">
-                    <a class="btn btn-primary" href="/recipes/<%= recipe._id %>/notes/new">Add a new note</a>    
-                </div>
-                <% recipe.notes.forEach(function(note){ %>
+                    <a class="btn btn-primary" href="/recipes/<%= recipe._id %>/comments/new">Add comment</a>    
+                 </div>
+                <% recipe.comments.forEach(function(comment){ %>
                     <div class="row">
                         <div class="col-md-12">
                             <hr>
                             <span class="pull-right">17th April 2018</span>
-                            <strong><p><%=note.header%></p></strong>
+                            <strong><p><%=comment.author%></p></strong>
                             
-                            <p><%=note.text%></p>
+                            <p><%=comment.text%></p>
                             
                         </div>
                     </div>

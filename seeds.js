@@ -1,6 +1,8 @@
 var mongoose = require("mongoose"),
     Recipe   = require("./models/recipe"),
-    Note     = require("./models/note");
+    Comment = require("./models/comment");
+   // Note     = require("./models/note");
+
     
     
 var sampleData = [
@@ -34,17 +36,17 @@ function seedDB(){
                        console.log(err);
                    } else {
                        console.log("New recipe added.");
-                       //Test Notes
-                       Note.create({
-                           text: "Next time, try adding a pinch of sea salt",
-                           date: "4 days ago"
-                       }, function(err, note){
+                       //Test Comments
+                       Comment.create({
+                           text: "This recipe is amazing!",
+                           author: "Lily"
+                       }, function(err, comment){
                            if(err){
                                console.log(err);
                            } else {
-                               sampleRecipe.notes.push(note);
+                               sampleRecipe.comments.push(comment);
                                sampleRecipe.save();
-                               console.log("New note create");
+                               console.log("New comment create");
                            }
                        });
                    }
