@@ -12,12 +12,6 @@ var recipeSchema = new mongoose.Schema({
         },
         username: String
     },
-    notes: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Note"
-        }
-    ],
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,

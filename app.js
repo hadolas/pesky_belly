@@ -4,13 +4,11 @@ var express    = require("express"),
     mongoose   = require("mongoose"),
     passport   = require("passport"),
     LocalStrategy = require("passport-local"),
-    Recipe     = require("./models/recipe"),
-    Note       = require("./models/note"),
     User       = require("./models/user"),
     seedDB     = require("./seeds");
     
 var recipeRoutes = require("./routes/recipes"),
-    noteRoutes   = require("./routes/notes"),
+    commentRoutes   = require("./routes/comments"),
     indexRoutes  = require("./routes/index");
 
 mongoose.connect("mongodb://localhost/pesky_belly");
@@ -40,7 +38,7 @@ app.use(function(req, res, next){
 
 app.use("/", indexRoutes);
 app.use(recipeRoutes);
-app.use(noteRoutes);
+app.use(commentRoutes);
 
 
 app.listen(process.env.PORT, process.env.IP, function(){
