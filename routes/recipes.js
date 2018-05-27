@@ -57,6 +57,29 @@ router.get("/recipes/:id", function(req, res){
     });
 });
 
+//EDIT - Route to edit a recipe
+router.get("/recipes/:id/edit", function(req, res){
+    Recipe.findById(req.params.id, function(err, recipe_result){
+       if(err){
+            res.redirect("/recipes");
+       } else {
+            res.render("recipes/edit", {recipe: recipe_result}); 
+
+       }
+    });
+});
+
+//UPDATE - Route for updating a recipe
+router.put("/recipes/:id", function(req, res){
+    Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, function(err, updatedRecipe){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/recipes/"+req.params.id);
+        }
+    });
+});
+
 // MIDDLEWARE
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
