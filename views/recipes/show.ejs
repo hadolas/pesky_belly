@@ -7,14 +7,19 @@
              <div class="thumbnail">
                  
                  <img class="img-responsive" src="<%= recipe.image %>">
-                 <p class="caption">
+                 <div class="caption">
+                <p>
                      <em>Submitted by <%= recipe.author.username %></em>
                  </p>
-                 <p class="caption">
+                 <p>
                      <%= recipe.description %>
                  </p>
-                    <p><a class="btn btn-success" href="/recipes/<%=recipe._id%>/edit">Edit</a></p>
-
+                 <a class="btn btn-success btn-xs" href="/recipes/<%=recipe._id%>/edit">Edit</a>
+                 <form id="delete-form" action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
+                     <button class="btn btn-danger btn-xs">Delete</button>
+                 </form>
+                 </div>
+                     
              </div>
              <div class="well">
                  <div class="text-right">
