@@ -14,10 +14,12 @@
                  <p>
                      <%= recipe.description %>
                  </p>
-                 <a class="btn btn-success btn-xs" href="/recipes/<%=recipe._id%>/edit">Edit</a>
-                 <form id="delete-form" action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
-                     <button class="btn btn-danger btn-xs">Delete</button>
-                 </form>
+                 <% if(currentUser && recipe.author.id.equals(currentUser._id)){ %>
+                     <a class="btn btn-success btn-xs" href="/recipes/<%=recipe._id%>/edit">Edit</a>
+                     <form id="delete-form" action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
+                         <button class="btn btn-danger btn-xs">Delete</button>
+                     </form>
+                 <% } %>
                  </div>
                      
              </div>
