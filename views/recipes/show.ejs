@@ -16,7 +16,7 @@
                  </p>
                  <% if(currentUser && recipe.author.id.equals(currentUser._id)){ %>
                      <a class="btn btn-success btn-xs" href="/recipes/<%=recipe._id%>/edit">Edit</a>
-                     <form id="delete-form" action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
+                     <form class="delete-form" action="/recipes/<%=recipe._id%>?_method=DELETE" method="POST">
                          <button class="btn btn-danger btn-xs">Delete</button>
                      </form>
                  <% } %>
@@ -32,9 +32,19 @@
                         <div class="col-md-12">
                             <hr>
                             <span class="pull-right">17th April 2018</span>
-                            <strong><p><%=comment.author%></p></strong>
+
+                            <strong><p><%=comment.author.username%></p></strong>
                             
                             <p><%=comment.text%></p>
+                            
+                            <a class="btn btn-warning btn-xs" 
+                                href="/recipes/<%=recipe._id%>/comments/<%=comment._id%>/edit">
+                                Edit comment
+                            </a>
+                            <form class="delete-form" action="/recipes/<%=recipe._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-xs btn-danger" value="Delete comment">
+                                <!--<a class="btn btn-xs btn-danger">Delete comment</a>-->
+                            </form>
                             
                         </div>
                     </div>

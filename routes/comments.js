@@ -31,9 +31,14 @@ router.post("/recipes/:id/comments", isLoggedIn, function(req, res){
                 if(err){
                     console.log(err);
                 } else {
+                    //add username and id to comment
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
                     //connect new comment to recipe
+                    comment.save();
                     recipeResult.comments.push(comment);
                     recipeResult.save();
+                    console.log("COMMENT:::::::::::::::  "+comment);
                     //redirect to recipe show page
                     res.redirect("/recipes/"+ recipeResult._id);
                 }
@@ -42,6 +47,38 @@ router.post("/recipes/:id/comments", isLoggedIn, function(req, res){
     });
 });
 
+// EDIT COMMENT
+router.get("/recipes/:id/comments/:commentid/edit", function(req, res){
+    Comment.findById(req.params.commentid, function(err, comment){
+        if(err){
+            res.redirect("back");
+        } else {
+            res.render("comments/edit", {recipe_id:req.params.id, comment:comment});
+        }
+    })
+});
+
+// UPDATE COMMENT
+router.put("/recipes/:id/comments/:commentid", function(req,res){
+    Comment.findByIdAndUpdate(req.params.commentid, req.body.comment, function(err, updatedComment){
+        if(err){
+            res.redirect("back");            
+        } else {
+            res.redirect("/recipes/"+req.params.id);
+        }
+    })
+});
+
+// DESTROY COMMENT
+router.delete("/recipes/:id/comments/:commentid", function(req, res){
+    Comment.findByIdAndRemove(req.params.commentid, function(err){
+        if(err){
+            res.redirect("back");
+        } else {
+            res.redirect("/recipes/"+req.params.id)
+        }
+    });
+});
 
 // MIDDLEWARE
 function isLoggedIn(req, res, next){
