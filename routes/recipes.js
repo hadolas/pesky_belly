@@ -2,6 +2,7 @@ var express = require("express"),
     router  = express.Router();
     
 var Recipe  = require("../models/recipe");
+var middleware = require("../middleware");
 
 
 //INDEX ROUTE: Show all recipes
@@ -16,7 +17,7 @@ router.get("/recipes", function(req, res){
 });
 
 //CREATE ROUTE: Add recipe to database
-router.post("/recipes", isLoggedIn, function(req, res){
+router.post("/recipes", middleware.isLoggedIn, function(req, res){
     // get data from "create recipe" form
     //res.send(req.body);
     var recipe_title = req.body.recipe_title;
@@ -41,7 +42,7 @@ router.post("/recipes", isLoggedIn, function(req, res){
 });
 
 //NEW - Render 'create new recipe' form
-router.get("/recipes/new", isLoggedIn, function(req, res){
+router.get("/recipes/new", middleware.isLoggedIn, function(req, res){
    res.render("recipes/new_recipe"); 
 });
 
@@ -58,7 +59,7 @@ router.get("/recipes/:id", function(req, res){
 });
 
 //EDIT - Route to edit a recipe
-router.get("/recipes/:id/edit", checkRecipeAuthor, function(req, res){
+router.get("/recipes/:id/edit", middleware.checkRecipeAuthor, function(req, res){
         
     Recipe.findById(req.params.id, function(err, recipe_result){
         res.render("recipes/edit", {recipe: recipe_result}); 
@@ -66,7 +67,7 @@ router.get("/recipes/:id/edit", checkRecipeAuthor, function(req, res){
 });
 
 //UPDATE - Route for updating a recipe
-router.put("/recipes/:id", checkRecipeAuthor, function(req, res){
+router.put("/recipes/:id", middleware.checkRecipeAuthor, function(req, res){
     Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, function(err, updatedRecipe){
         if(err){
             console.log(err);
@@ -77,7 +78,7 @@ router.put("/recipes/:id", checkRecipeAuthor, function(req, res){
 });
 
 //DESTROY - Route for deleting a recipe
-router.delete("/recipes/:id", checkRecipeAuthor, function(req, res){
+router.delete("/recipes/:id", middleware.checkRecipeAuthor, function(req, res){
     Recipe.findByIdAndRemove(req.params.id, function(err){
         if(err){
             res.redirect("/recipes");
@@ -88,32 +89,5 @@ router.delete("/recipes/:id", checkRecipeAuthor, function(req, res){
     });
 });
 
-// MIDDLEWARE
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-
-function checkRecipeAuthor(req, res, next){
-    if(req.isAuthenticated()){
-        //if user is logged in:
-        Recipe.findById(req.params.id, function(err, recipe_result){
-            if(err){
-                res.redirect("back");
-            } else {
-                if(recipe_result.author.id.equals(req.user._id)){
-                //if logged in user is author of recipe:
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-            }
-        });
-    } else {
-        res.redirect("back");
-    }
-}
 
 module.exports = router;
