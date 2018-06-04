@@ -36,15 +36,16 @@
                             <strong><p><%=comment.author.username%></p></strong>
                             
                             <p><%=comment.text%></p>
-                            
-                            <a class="btn btn-warning btn-xs" 
-                                href="/recipes/<%=recipe._id%>/comments/<%=comment._id%>/edit">
-                                Edit comment
-                            </a>
-                            <form class="delete-form" action="/recipes/<%=recipe._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                                <input type="submit" class="btn btn-xs btn-danger" value="Delete comment">
-                                <!--<a class="btn btn-xs btn-danger">Delete comment</a>-->
-                            </form>
+                            <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                                <a class="btn btn-warning btn-xs" 
+                                    href="/recipes/<%=recipe._id%>/comments/<%=comment._id%>/edit">
+                                    Edit comment
+                                </a>
+                                <form class="delete-form" action="/recipes/<%=recipe._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="Delete comment">
+                                    <!--<a class="btn btn-xs btn-danger">Delete comment</a>-->
+                                </form>
+                            <% } %>
                             
                         </div>
                     </div>

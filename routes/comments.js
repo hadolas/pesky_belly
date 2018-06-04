@@ -48,7 +48,7 @@ router.post("/recipes/:id/comments", isLoggedIn, function(req, res){
 });
 
 // EDIT COMMENT
-router.get("/recipes/:id/comments/:commentid/edit", function(req, res){
+router.get("/recipes/:id/comments/:commentid/edit", checkCommentAuthor, function(req, res){
     Comment.findById(req.params.commentid, function(err, comment){
         if(err){
             res.redirect("back");
@@ -59,7 +59,7 @@ router.get("/recipes/:id/comments/:commentid/edit", function(req, res){
 });
 
 // UPDATE COMMENT
-router.put("/recipes/:id/comments/:commentid", function(req,res){
+router.put("/recipes/:id/comments/:commentid", checkCommentAuthor, function(req,res){
     Comment.findByIdAndUpdate(req.params.commentid, req.body.comment, function(err, updatedComment){
         if(err){
             res.redirect("back");            
@@ -70,7 +70,7 @@ router.put("/recipes/:id/comments/:commentid", function(req,res){
 });
 
 // DESTROY COMMENT
-router.delete("/recipes/:id/comments/:commentid", function(req, res){
+router.delete("/recipes/:id/comments/:commentid", checkCommentAuthor, function(req, res){
     Comment.findByIdAndRemove(req.params.commentid, function(err){
         if(err){
             res.redirect("back");
@@ -86,6 +86,26 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function checkCommentAuthor(req, res, next){
+    if(req.isAuthenticated()){
+        //if user is logged in:
+        Comment.findById(req.params.commentid, function(err, comment_result){
+            if(err){
+                res.redirect("back");
+            } else {
+                if(comment_result.author.id.equals(req.user._id)){
+                //if logged in user is author of comment:
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
 }
 
 module.exports = router;
